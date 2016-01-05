@@ -1,0 +1,79 @@
+#!/bin/sh
+# postinst script for activemq
+# based on script for sensu: https://github.com/sensu/sensu-build/blob/master/pkg_scripts/deb/postinst
+
+set -e
+
+NAME="activemq"
+GROUP=$NAME
+USER=$NAME
+
+
+# summary of how this script can be called and ordering:
+#  http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html
+#  http://www.proulx.com/~bob/debian/hints/DpkgScriptOrder
+
+create_activemq_user_group() {
+    if ! getent group $GROUP >/dev/null ; then
+        # Adding system group
+        addgroup --system $GROUP >/dev/null
+    fi
+
+    # creating activemq user if he isn't already there
+    if ! getent passwd $USER >/dev/null ; then
+            # Adding system user
+            adduser \
+              --system \
+              --disabled-login \
+              --ingroup $GROUP \
+              --gecos "activemq service user" \
+              --shell /bin/false \
+              $USER  >/dev/null
+    fi
+}
+
+
+chown_activemq_dirs() {
+    chown -R $USER:$GROUP /etc/activemq
+    chown $USER:$GROUP /var/log/activemq
+    chown -R $USER:$GROUP /usr/local/activemq
+    chmod 755 /usr/local/activemq/bin/activemq
+    if [ -d "/usr/local/activemq/etc" ]; then
+      mv /usr/local/activemq/conf/* /etc/activemq/
+      rmdir /usr/local/activemq/conf
+    fi
+    ln -s /etc/activemq /usr/local/activemq/conf
+    chown $USER:$GROUP /usr/local/activemq/conf
+
+    if [ ! -d "/var/lib/activemq" ]; then
+      mkdir /var/lib/activemq
+      mv  /usr/local/activemq/data/* /var/lib/activemq/
+      rmdir /usr/local/activemq/data
+      ln -s /var/lib/activemq /usr/local/activemq/data
+      chown $USER:$GROUP /usr/local/activemq/data
+    fi
+
+    if [ -d "/var/log/activemq" ]; then
+      mv  /usr/local/activemq/log/* /var/log/activemq/
+      rmdir /usr/local/activemq/log
+      ln -s /var/log/activemq /usr/local/activemq/log
+      chown $USER:$GROUP /usr/local/activemq/log
+    fi
+}
+
+case "$1" in
+    configure)
+        create_activemq_user_group
+        chown_activemq_dirs
+        ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
