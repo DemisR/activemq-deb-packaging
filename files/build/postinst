@@ -47,15 +47,19 @@ chown_activemq_dirs() {
 
     if [ ! -d "/var/lib/activemq" ]; then
       mkdir /var/lib/activemq
-      mv  /usr/local/activemq/data/* /var/lib/activemq/
-      rmdir /usr/local/activemq/data
+      if [ -d "/usr/local/activemq/data" ]; then
+        mv  /usr/local/activemq/data/* /var/lib/activemq/
+        rmdir /usr/local/activemq/data
+      fi
       ln -s /var/lib/activemq /usr/local/activemq/data
       chown $USER:$GROUP /usr/local/activemq/data
     fi
 
     if [ -d "/var/log/activemq" ]; then
-      mv  /usr/local/activemq/log/* /var/log/activemq/
-      rmdir /usr/local/activemq/log
+      if [ -d "/usr/local/activemq/log" ]; then
+        mv  /usr/local/activemq/log/* /var/log/activemq/
+        rmdir /usr/local/activemq/log
+      fi
       ln -s /var/log/activemq /usr/local/activemq/log
       chown $USER:$GROUP /usr/local/activemq/log
     fi

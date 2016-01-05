@@ -6,12 +6,12 @@
 # Active MQ installation dir
 if [ -z "$ACTIVEMQ_HOME" ] ; then
 # try to find ACTIVEMQ
-if [ -d /opt/activemq ] ; then
-ACTIVEMQ_HOME=/opt/activemq
+if [ -d /usr/local/activemq ] ; then
+ACTIVEMQ_HOME=/usr/local/activemq
 fi
 
-if [ -d "${HOME}/opt/activemq" ] ; then
-ACTIVEMQ_HOME="${HOME}/opt/activemq"
+if [ -d "${HOME}/usr/local/activemq" ] ; then
+ACTIVEMQ_HOME="${HOME}/usr/local/activemq"
 fi
 
 ## resolve links - $0 may be a link to activemq's home
