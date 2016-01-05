@@ -44,7 +44,7 @@ mv conf/* ../build/etc/activemq
 cp ${origdir}/files/config/etc/activemq.xml.dist ../build/etc/activemq
 cp ${origdir}/files/config/etc/log4j.properties ../build/etc/activemq
 mv * ../build/usr/local/activemq/
-rmdir ../build/usr/local/activemq/etc
+/build/usr/local/activemq/conf
 
 cd ../build
 pushd usr/local/activemq
