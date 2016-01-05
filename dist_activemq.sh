@@ -25,7 +25,6 @@ mkdir -p activemq
 cd activemq
 mkdir -p build/usr/local/activemq
 mkdir -p build/etc/default
-mkdir -p build/etc/init
 mkdir -p build/etc/init.d
 mkdir -p build/etc/activemq
 mkdir -p build/var/log/activemq
@@ -44,8 +43,7 @@ mv conf/* ../build/etc/activemq
 cp ${origdir}/files/config/etc/activemq.xml.dist ../build/etc/activemq
 cp ${origdir}/files/config/etc/log4j.properties ../build/etc/activemq
 mv * ../build/usr/local/activemq/
-rmdir /build/usr/local/activemq/conf
-
+rmdir ../build/usr/local/activemq/conf
 cd ../build
 pushd usr/local/activemq
 popd
