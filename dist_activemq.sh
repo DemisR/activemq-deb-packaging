@@ -11,7 +11,7 @@ arch="all"
 section="misc"
 license="Apache Software License 2.0"
 bin_package="apache-activemq-${version}-bin.tar.gz"
-bin_download_url="http://www.apache.org/dyn/closer.cgi?path=/activemq/${version}/${bin_package}"
+bin_download_url="http://apache.belnet.be/activemq/${version}/${bin_package}"
 origdir="$(pwd)"
 
 #_ MAIN _#
