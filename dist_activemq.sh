@@ -40,7 +40,7 @@ tar zxf ${origdir}/${bin_package}
 cd apache-activemq-${version}
 
 # Config files
-mv etc/* ../build/etc/activemq
+mv conf/* ../build/etc/activemq
 cp ${origdir}/files/config/etc/activemq.xml.dist ../build/etc/activemq
 cp ${origdir}/files/config/etc/log4j.properties ../build/etc/activemq
 mv * ../build/usr/local/activemq/
