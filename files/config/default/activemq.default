@@ -58,7 +58,7 @@ fi
 
 # Configure a user with non root priviledges, if no user is specified do not change user
 if [ -z "$ACTIVEMQ_USER" ] ; then
-ACTIVEMQ_USER=""
+ACTIVEMQ_USER="activemq"
 fi
 
 # Active MQ data directory

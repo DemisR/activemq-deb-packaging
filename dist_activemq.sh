@@ -32,7 +32,7 @@ mkdir -p build/var/log/activemq
 
 
 cp ${origdir}/files/config/default/activemq.default build/etc/default/activemq
-cp ${origdir}/files/config/init/activemq.init.d build/etc/init.d/activemq
+# cp ${origdir}/files/config/init/activemq.init.d build/etc/init.d/activemq
 
 # Updated to use the Binary package
 

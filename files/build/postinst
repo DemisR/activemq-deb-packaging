@@ -12,6 +12,9 @@ USER=$NAME
 # summary of how this script can be called and ordering:
 #  http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html
 #  http://www.proulx.com/~bob/debian/hints/DpkgScriptOrder
+copyinitscript() {
+    ln -snf  /usr/local/activemq/bin/activemq /etc/init.d/activemq
+}
 
 create_activemq_user_group() {
     if ! getent group $GROUP >/dev/null ; then
@@ -28,6 +31,7 @@ create_activemq_user_group() {
               --ingroup $GROUP \
               --gecos "activemq service user" \
               --shell /bin/false \
+              --home /usr/local/activemq \
               $USER  >/dev/null
     fi
 }
@@ -67,6 +71,7 @@ chown_activemq_dirs() {
 
 case "$1" in
     configure)
+        copyinitscript
         create_activemq_user_group
         chown_activemq_dirs
         ;;
