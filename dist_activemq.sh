@@ -40,7 +40,8 @@ cd apache-activemq-${version}
 
 # Config files
 mv conf/* ../build/etc/activemq
-cp ${origdir}/files/config/etc/activemq.xml.dist ../build/etc/activemq
+mv ../build/etc/activemq/activemq.xml ../build/etc/activemq/activemq.xml.original
+cp ${origdir}/files/config/etc/activemq.xml ../build/etc/activemq
 cp ${origdir}/files/config/etc/log4j.properties ../build/etc/activemq
 mv * ../build/usr/local/activemq/
 rmdir ../build/usr/local/activemq/conf
