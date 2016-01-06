@@ -67,6 +67,8 @@ chown_activemq_dirs() {
       ln -s /var/log/activemq /usr/local/activemq/log
       chown $USER:$GROUP /usr/local/activemq/log
     fi
+
+    chown -R $USER:$GROUP /usr/local/activemq
 }
 
 case "$1" in
