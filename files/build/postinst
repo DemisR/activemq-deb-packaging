@@ -42,13 +42,15 @@ chown_activemq_dirs() {
     chown $USER:$GROUP /var/log/activemq
     chown -R $USER:$GROUP /usr/local/activemq
     chmod 755 /usr/local/activemq/bin/activemq
-    if [ -d "/usr/local/activemq/conf" ]; then
-      mv /usr/local/activemq/conf/* /etc/activemq/
-      rmdir /usr/local/activemq/conf
+    #if [ -d "/usr/local/activemq/conf" ]; then
+    #  mv /usr/local/activemq/conf/* /etc/activemq/
+    #  rmdir /usr/local/activemq/conf
+    #fi
+    if [ ! -d "/usr/local/activemq/conf" ]; then
+      ln -s /etc/activemq /usr/local/activemq/conf
+      chown $USER:$GROUP /usr/local/activemq/conf
     fi
-    ln -s /etc/activemq /usr/local/activemq/conf
-    chown $USER:$GROUP /usr/local/activemq/conf
-
+  
     if [ ! -d "/var/lib/activemq" ]; then
       mkdir /var/lib/activemq
       if [ -d "/usr/local/activemq/data" ]; then
