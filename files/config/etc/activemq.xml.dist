@@ -30,7 +30,7 @@
 
    <!-- Allows accessing the server log -->
     <bean id="logQuery" class="io.fabric8.insight.log.log4j.Log4jLogQuery"
-          lazy-init="false" scope="singleton"
+	  lazy-init="false" scope="singleton"
           init-method="start" destroy-method="stop">
     </bean>
 
@@ -54,6 +54,35 @@
                   <pendingMessageLimitStrategy>
                     <constantPendingMessageLimitStrategy limit="1000"/>
                   </pendingMessageLimitStrategy>
+                  <deadLetterStrategy>
+                    <!--
+                      Use the prefix 'DLQ.' for the destination name, and make
+                      the DLQ a queue rather than a topic
+                    -->
+                    <individualDeadLetterStrategy
+                      queuePrefix="DLQ." useQueueForQueueMessages="true" />
+                   </deadLetterStrategy>
+                </policyEntry>
+
+                <policyEntry queue=">" producerFlowControl="true" memoryLimit="100mb">
+                  <!-- Use VM cursor for better latency
+                       For more information, see:
+
+                       http://activemq.apache.org/message-cursors.html
+                  -->
+	                <pendingQueuePolicy>
+	                  <fileQueueCursor />
+	                  <!-- <vmQueueCursor/> -->
+	                </pendingQueuePolicy>
+
+	                <deadLetterStrategy>
+	                    <!--
+	                      Use the prefix 'DLQ.' for the destination name, and make
+	                      the DLQ a queue rather than a topic
+	                    -->
+	                    <individualDeadLetterStrategy
+	                      queuePrefix="DLQ." topicPrefix="DLQ." useQueueForQueueMessages="true" />
+	                 </deadLetterStrategy>
                 </policyEntry>
               </policyEntries>
             </policyMap>
@@ -68,7 +97,7 @@
             http://activemq.apache.org/jmx.html
         -->
         <managementContext>
-            <managementContext createConnector="false"/>
+            <managementContext createConnector="true" connectorPort="1099"/>
         </managementContext>
 
         <!--
@@ -94,10 +123,10 @@
                     <memoryUsage percentOfJvmHeap="70" />
                 </memoryUsage>
                 <storeUsage>
-                    <storeUsage limit="25 gb"/>
+                    <storeUsage limit="45 gb"/>
                 </storeUsage>
                 <tempUsage>
-                    <tempUsage limit="5 gb"/>
+                    <tempUsage limit="20 gb"/>
                 </tempUsage>
             </systemUsage>
         </systemUsage>
@@ -110,12 +139,12 @@
         -->
         <transportConnectors>
             <!-- DOS protection, limit concurrent connections to 1000 and frame size to 100MB -->
+            <!--<transportConnector name="openwire" uri="tcp://0.0.0.0:61616?wireFormat.maxFrameSize=104857600" enableStatusMonitor="true"/>-->
             <transportConnector name="nio" uri="nio://0.0.0.0:61616?wireFormat.maxFrameSize=104857600" enableStatusMonitor="true"/>
-            <!-- <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>-->
-            <!-- <transportConnector name="amqp" uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>-->
-            <!-- <transportConnector name="stomp" uri="stomp://0.0.0.0:61613?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>-->
-            <!-- <transportConnector name="mqtt" uri="mqtt://0.0.0.0:1883?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>-->
-            <!-- <transportConnector name="ws" uri="ws://0.0.0.0:61614?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>-->
+         <!--   <transportConnector name="amqp" uri="amqp://0.0.0.0:5672?wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="stomp" uri="stomp://0.0.0.0:61613?wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="mqtt" uri="mqtt://0.0.0.0:1883?wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="ws" uri="ws://0.0.0.0:61614?wireFormat.maxFrameSize=104857600"/> -->
         </transportConnectors>
 
         <!-- destroy the spring context on shutdown to stop jetty -->

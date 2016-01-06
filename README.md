@@ -88,3 +88,10 @@ Users:
   - activemq : activemq
 
 ---
+
+
+# Configuration
+
+- Change broker name in file `activemq.xml`
+  - `brokerName="nameofbroker"`
+- Change password in `/etc/activemq/jetty-realm.properties` (format `username: password, rolename`)
