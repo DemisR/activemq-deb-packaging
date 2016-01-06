@@ -44,7 +44,9 @@ cp ${origdir}/files/config/etc/activemq.xml.dist ../build/etc/activemq
 cp ${origdir}/files/config/etc/log4j.properties ../build/etc/activemq
 mv * ../build/usr/local/activemq/
 rmdir ../build/usr/local/activemq/conf
-rmdir ../build/usr/local/activemq/log
+if [ -d "../build/usr/local/activemq/log" ]; then
+  rmdir ../build/usr/local/activemq/log
+fi
 cd ../build
 pushd usr/local/activemq
 popd
