@@ -67,7 +67,7 @@ chown_activemq_dirs() {
 
     if [ -d "/var/log/activemq" ]; then
       if [ -d "/usr/local/activemq/log" ]; then
-        if [ ! -L "/usr/local/activemq/log"]; then
+        if [ ! -L "/usr/local/activemq/log" ]; then
           mv  /usr/local/activemq/log/* /var/log/activemq/
           rmdir /usr/local/activemq/log
           ln -s /var/log/activemq /usr/local/activemq/log
